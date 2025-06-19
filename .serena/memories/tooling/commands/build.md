@@ -1,14 +1,13 @@
 ---
-timestamp: 2025-06-19 10:52:00
+timestamp: 2025-06-19 15:05:00
 version: 1.0.0
-type: tooling.command.build.deprecated
-status: deprecated
-superseded_by: tooling/commands/build.md
+type: tooling.command.build
+status: active
+supersedes: [suggested_commands.md]
+dependencies: [project/overview.md]
 ---
 
-# Suggested Commands for Development
-
-**DEPRECATED**: This memory has been moved to [tooling/commands/build.md](tooling/commands/build.md).
+# Build Commands
 
 ## Building the Project
 

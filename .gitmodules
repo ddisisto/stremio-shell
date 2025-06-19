@@ -8,3 +8,6 @@
 	path = deps/chroma
 	url = https://github.com/Ivshti/razerchroma
 
+[submodule ".serena/serena-source"]
+	path = .serena/serena-source
+	url = https://github.com/ddisisto/serena.git

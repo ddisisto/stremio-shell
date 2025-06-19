@@ -22,7 +22,19 @@ If conflicts found:
 2. **FIX** memories first (newest timestamp wins)  
 3. **THEN** start actual work
 
-See: [Reference Checker](meta/reference_checker.md) for conflict resolution
+### 🔧 Automatic Tools
+
+**Update timestamp when editing:**
+```bash
+.serena/update_memory_timestamp.sh path/to/memory.md [patch|minor|major]
+```
+
+**Install git hook for enforcement:**
+```bash
+ln -sf ../../.serena/hooks/pre-commit-memory-check .git/hooks/pre-commit
+```
+
+See: [Reference Checker](meta/reference_checker.md) | [Timestamp Hygiene](meta/timestamp_hygiene.md)
 
 ## Quick Navigation
 
@@ -32,7 +44,7 @@ See: [Reference Checker](meta/reference_checker.md) for conflict resolution
 |------|----------------|-------------------|
 | Start coding | [Project Overview](project/overview.md) | [Qt Guidelines](development/guidelines/qt.md), [C++ Patterns](tooling/serena/cpp_patterns.md) |
 | Fix a bug | [Debugging Guide](development/workflows/debugging.md) | [Component Map](project/architecture.md#components) |
-| Add feature | [Architecture](project/architecture.md) | [Conventions](development/conventions/), [Checklist](development/checklists/feature.md) |
+| Add feature | [Architecture](project/architecture.md) | [Conventions](development/conventions/code_style.md), [Checklist](development/checklists/task_completion.md) |
 | Build/Test | [Build Commands](tooling/commands/build.md) | [Platform Guide](development/guidelines/platforms.md) |
 
 ### 🗂️ Memory Namespaces
@@ -51,8 +63,8 @@ memories/
 
 - MPV Component → [project/components/mpv.md](project/components/mpv.md)
 - Qt Guidelines → [development/guidelines/qt.md](development/guidelines/qt.md)  
-- Build Process → [development/workflows/building.md](development/workflows/building.md)
-- LSP Support → [tooling/serena/lsp_matrix.md](tooling/serena/lsp_matrix.md)
+- Build Process → [tooling/commands/build.md](tooling/commands/build.md)
+- LSP Support → [tooling/serena/lsp_support.md](tooling/serena/lsp_support.md)
 
 ### "Find All References" Patterns
 
@@ -86,4 +98,4 @@ grep -l "dependencies:.*mpv.md" .serena/memories/**/*.md
 4. **Note supersession** - always use latest version
 
 ---
-*Memory system follows [Schema Definition](meta/schema.md)*
+*Memory system follows [Schema Definition](memory_schema.md)*

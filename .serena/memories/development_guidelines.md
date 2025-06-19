@@ -1,4 +1,16 @@
+---
+timestamp: 2025-06-19 10:54:00
+version: 1.0.0
+type: development.guideline.general.deprecated
+status: deprecated
+superseded_by: development/guidelines/qt.md, development/guidelines/platforms.md
+---
+
 # Development Guidelines
+
+**DEPRECATED**: This memory has been split into:
+- [Qt Guidelines](development/guidelines/qt.md) - Qt-specific development practices
+- [Platform Guidelines](development/guidelines/platforms.md) - Platform-specific considerations
 
 ## Qt-specific Guidelines
 - Use Qt's cross-platform APIs for file operations, networking, etc.

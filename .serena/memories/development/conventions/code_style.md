@@ -1,14 +1,12 @@
 ---
-timestamp: 2025-06-19 10:51:00
+timestamp: 2025-06-19 15:00:00
 version: 1.0.0
-type: development.convention.code_style.deprecated
-status: deprecated
-superseded_by: development/conventions/code_style.md
+type: development.convention.code_style
+status: active
+supersedes: [code_style_conventions.md]
 ---
 
 # Code Style and Conventions
-
-**DEPRECATED**: This memory has been moved to [development/conventions/code_style.md](development/conventions/code_style.md).
 
 ## C++ Style
 - **Header Guards**: Use `#ifndef FILENAME_H_` with trailing underscore

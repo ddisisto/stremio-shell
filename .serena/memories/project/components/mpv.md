@@ -1,5 +1,5 @@
 ---
-timestamp: 2025-01-19 15:45:00
+timestamp: 2025-06-19 14:14:00
 version: 1.0.0
 type: project.component.mpv
 status: active

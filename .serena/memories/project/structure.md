@@ -1,14 +1,13 @@
 ---
-timestamp: 2025-06-19 10:53:00
+timestamp: 2025-06-19 14:57:00
 version: 1.0.0
-type: project.structure.deprecated
-status: deprecated
-superseded_by: project/structure.md
+type: project.structure
+status: active
+supersedes: [project_structure.md]
+dependencies: [project/overview.md]
 ---
 
 # Project Structure
-
-**DEPRECATED**: This memory has been moved to [project/structure.md](project/structure.md).
 
 ## Root Directory Files
 - **Build Configuration**: `CMakeLists.txt`, `stremio.pro`, `Makefile`, `release.makefile`

@@ -48,4 +48,4 @@ See: [QML Patterns](../../project/architecture.md#qml-integration)
 - `QtConcurrent` for parallel tasks
 - Signal-slot connections are thread-safe
 
-Related: [Performance Guidelines](../performance.md)
+Related: [Platform Guidelines](platforms.md)

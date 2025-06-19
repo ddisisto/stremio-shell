@@ -1,0 +1,74 @@
+#!/bin/bash
+# Git pre-commit hook for memory timestamp enforcement
+# Install: ln -s ../../.serena/hooks/pre-commit-memory-check .git/hooks/pre-commit
+
+set -e
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
+
+echo "🔍 Checking memory file timestamps..."
+
+# Get list of staged memory files
+STAGED_MEMORIES=$(git diff --cached --name-only | grep "\.serena/memories/.*\.md$" || true)
+
+if [ -z "$STAGED_MEMORIES" ]; then
+    echo "✅ No memory files in commit"
+    exit 0
+fi
+
+ERRORS=0
+TODAY=$(date +%Y-%m-%d)
+
+for file in $STAGED_MEMORIES; do
+    # Skip if file is deleted
+    if [ ! -f "$file" ]; then
+        continue
+    fi
+    
+    # Extract timestamp from staged content
+    TIMESTAMP=$(git show ":$file" | grep "^timestamp:" | head -1 | sed 's/timestamp:[ ]*//')
+    
+    if [ -z "$TIMESTAMP" ]; then
+        echo -e "${RED}✗ ERROR:${NC} $file has no timestamp in metadata"
+        ERRORS=$((ERRORS + 1))
+        continue
+    fi
+    
+    # Extract just the date part
+    TIMESTAMP_DATE=$(echo "$TIMESTAMP" | cut -d' ' -f1)
+    
+    # Check if timestamp is today
+    if [[ "$TIMESTAMP_DATE" != "$TODAY" ]]; then
+        echo -e "${RED}✗ ERROR:${NC} $file has stale timestamp: $TIMESTAMP"
+        echo -e "  ${YELLOW}Expected:${NC} $TODAY (today)"
+        echo -e "  ${YELLOW}Fix with:${NC} .serena/update_memory_timestamp.sh $file"
+        ERRORS=$((ERRORS + 1))
+    else
+        echo -e "${GREEN}✓${NC} $file - timestamp current"
+    fi
+done
+
+if [ $ERRORS -gt 0 ]; then
+    echo -e "\n${RED}❌ Commit blocked:${NC} $ERRORS memory file(s) with stale timestamps"
+    echo -e "\n${YELLOW}To fix all at once:${NC}"
+    echo "for f in $STAGED_MEMORIES; do"
+    echo "  .serena/update_memory_timestamp.sh \"\$f\""
+    echo "  git add \"\$f\""
+    echo "done"
+    exit 1
+fi
+
+echo -e "${GREEN}✅ All memory timestamps are current${NC}"
+
+# Run reference checker too
+echo -e "\n🔍 Running reference integrity check..."
+if .serena/check_references.sh > /dev/null 2>&1; then
+    echo -e "${GREEN}✅ Reference check passed${NC}"
+else
+    echo -e "${RED}❌ Reference check failed${NC}"
+    echo "Run: .serena/check_references.sh"
+    exit 1
+fi

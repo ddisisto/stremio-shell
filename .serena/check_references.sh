@@ -98,7 +98,54 @@ if [[ -n "$stale_files" ]]; then
     done
 fi
 
-# 6. Summary
+# 6. Check timestamp vs mtime drift
+echo -e "\n${YELLOW}[Checking Timestamp Integrity]${NC}"
+find "$MEMORY_DIR" -name "*.md" -not -path "*/meta/*" 2>/dev/null | while read -r file; do
+    # Extract timestamp from file metadata
+    timestamp_line=$(grep "^timestamp:" "$file" 2>/dev/null || echo "")
+    if [[ -n "$timestamp_line" ]]; then
+        # Parse timestamp (handle both YYYY-MM-DD and YYYY-MM-DD HH:MM:SS formats)
+        timestamp_str=$(echo "$timestamp_line" | sed 's/timestamp:[ ]*//')
+        
+        # Convert to epoch seconds (macOS and Linux compatible)
+        if command -v gdate >/dev/null 2>&1; then
+            # macOS with GNU date
+            timestamp_epoch=$(gdate -d "$timestamp_str" +%s 2>/dev/null || echo "0")
+            mtime_epoch=$(gdate -r "$file" +%s 2>/dev/null || echo "0")
+        else
+            # Linux
+            timestamp_epoch=$(date -d "$timestamp_str" +%s 2>/dev/null || echo "0")
+            mtime_epoch=$(date -r "$file" +%s 2>/dev/null || stat -c %Y "$file" 2>/dev/null || echo "0")
+        fi
+        
+        if [[ "$timestamp_epoch" != "0" && "$mtime_epoch" != "0" ]]; then
+            # Calculate drift (mtime - timestamp)
+            drift=$((mtime_epoch - timestamp_epoch))
+            drift_days=$((drift / 86400))
+            
+            # Flag if mtime is significantly newer than timestamp (>1 day)
+            if [[ $drift_days -gt 1 ]]; then
+                echo -e "${RED}✗ TIMESTAMP DRIFT:${NC} $(basename "$file")"
+                echo "    Metadata timestamp: $timestamp_str"
+                echo "    File modified: $(date -r "$file" '+%Y-%m-%d %H:%M:%S' 2>/dev/null || echo "unknown")"
+                echo "    Drift: $drift_days days (file modified after timestamp)"
+                ((ISSUES_FOUND++))
+            fi
+            
+            # Also flag if timestamp is in the future
+            current_epoch=$(date +%s)
+            if [[ $timestamp_epoch -gt $current_epoch ]]; then
+                echo -e "${RED}✗ FUTURE TIMESTAMP:${NC} $(basename "$file")"
+                echo "    Timestamp: $timestamp_str (in the future!)"
+                ((ISSUES_FOUND++))
+            fi
+        fi
+    else
+        echo -e "${YELLOW}⚠ NO TIMESTAMP:${NC} $(basename "$file")"
+    fi
+done
+
+# 7. Summary
 echo -e "\n${YELLOW}[Summary]${NC}"
 if [[ $ISSUES_FOUND -eq 0 ]]; then
     echo -e "${GREEN}✓ All reference checks passed!${NC}"
@@ -109,6 +156,7 @@ else
     echo "2. Resolve type duplicates"  
     echo "3. Update supersession chains"
     echo "4. Review topic conflicts - newest wins"
+    echo "5. Update timestamps for modified files"
     echo -e "\nSee ${MEMORY_DIR}/meta/reference_checker.md for resolution guidelines"
 fi
 

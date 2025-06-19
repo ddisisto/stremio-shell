@@ -1,12 +1,16 @@
 ---
-timestamp: 2025-01-19
+timestamp: 2025-01-19 13:45:00
 version: 1.1
+type: tooling.serena.lsp_support.deprecated
+status: deprecated
+superseded_by: tooling/serena/lsp_support.md
 related: [development_guidelines, project_structure, memory_index]
 category: tooling
-status: active
 ---
 
 # Serena LSP Support in Stremio Shell
+
+**DEPRECATED**: This memory has been moved to [tooling/serena/lsp_support.md](tooling/serena/lsp_support.md).
 
 Critical knowledge for effective use of Serena's semantic code tools in this C++ project.
 

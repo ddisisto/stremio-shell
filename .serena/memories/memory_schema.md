@@ -80,9 +80,9 @@ Config: `CMakeLists.txt:55-72`
 
 ### Semantic Links
 ```markdown
-Implements: [Media Playback](../project/architecture.md#media)
-Extended by: [Razer Integration](../project/components/razer.md)
-Requires: [Qt Framework](../development/guidelines/qt.md)
+Implements: [Media Playback](project/architecture.md#media)
+Extended by: [MPV Component](project/components/mpv.md)
+Requires: [Qt Framework](development/guidelines/qt.md)
 ```
 
 ## Migration Protocol

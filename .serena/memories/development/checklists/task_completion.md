@@ -1,14 +1,13 @@
 ---
-timestamp: 2025-06-19 10:52:00
+timestamp: 2025-06-19 15:08:00
 version: 1.0.0
-type: development.checklist.task_completion.deprecated
-status: deprecated
-superseded_by: development/checklists/task_completion.md
+type: development.checklist.task_completion
+status: active
+supersedes: [task_completion_checklist.md]
+dependencies: [development/conventions/code_style.md, tooling/commands/build.md]
 ---
 
 # Task Completion Checklist
-
-**DEPRECATED**: This memory has been moved to [development/checklists/task_completion.md](development/checklists/task_completion.md).
 
 When completing a coding task in the Stremio Shell project:
 
